@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1yp23o6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="c173d94" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0" camunda:diagramRelationId="f3e0e694-8bb4-451d-8ca5-0159745e1779">
+  <bpmn:process id="paymentProcess" name="Payment Process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_PaymentRequired" name="Payment Required">
+      <bpmn:outgoing>Flow_paymentRequired-chargeCreditCard</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_paymentRequired-chargeCreditCard" sourceRef="StartEvent_PaymentRequired" targetRef="Task_ChargeCreditCard" />
+    <bpmn:serviceTask id="Task_ChargeCreditCard" name="Charge Credit Card">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="chargeCreditCard" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_paymentRequired-chargeCreditCard</bpmn:incoming>
+      <bpmn:outgoing>Flow_chargeCreditCard-paymentSuccessful</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_PaymentSuccessful" name="Payment Successful">
+      <bpmn:incoming>Flow_chargeCreditCard-paymentSuccessful</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_chargeCreditCard-paymentSuccessful" sourceRef="Task_ChargeCreditCard" targetRef="EndEvent_PaymentSuccessful" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="paymentProcess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_PaymentRequired">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="175" y="142" width="45" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0x6y7pw_di" bpmnElement="EndEvent_PaymentSuccessful">
+        <dc:Bounds x="482" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="474" y="142" width="54" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17vryd1_di" bpmnElement="Task_ChargeCreditCard">
+        <dc:Bounds x="300" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0x8ulr1_di" bpmnElement="Flow_paymentRequired-chargeCreditCard">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="300" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v85f58_di" bpmnElement="Flow_chargeCreditCard-paymentSuccessful">
+        <di:waypoint x="400" y="117" />
+        <di:waypoint x="482" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

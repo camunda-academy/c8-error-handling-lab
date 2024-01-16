@@ -1,0 +1,76 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "8516401"
+  },
+  "schemaVersion": 10,
+  "components": [
+    {
+      "text": "## Check Credit Card Details",
+      "type": "text",
+      "id": "Field_1y7r1ul",
+      "layout": {
+        "row": "Row_1yzjcyo"
+      }
+    },
+    {
+      "label": "Reference",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1ammndy",
+        "columns": null
+      },
+      "id": "Field_035kqla",
+      "key": "reference"
+    },
+    {
+      "label": "Amount",
+      "type": "textfield",
+      "id": "Field_0p8a9xa",
+      "key": "amount",
+      "layout": {
+        "row": "Row_0h6eq07"
+      }
+    },
+    {
+      "label": "Card Number",
+      "type": "textfield",
+      "id": "Field_1j2py1a",
+      "key": "cardNumber",
+      "layout": {
+        "row": "Row_15opzdy"
+      }
+    },
+    {
+      "label": "Card Expiry",
+      "type": "textfield",
+      "id": "Field_1l2tmgg",
+      "key": "cardExpiry",
+      "layout": {
+        "row": "Row_0a2rkgg"
+      }
+    },
+    {
+      "label": "Card CVC",
+      "type": "textfield",
+      "id": "Field_0pydzhj",
+      "key": "cardCVC",
+      "layout": {
+        "row": "Row_1nh9icr"
+      }
+    },
+    {
+      "label": "Valid Credit Card?",
+      "type": "checkbox",
+      "id": "Field_08wi408",
+      "key": "isValidCreditCard",
+      "layout": {
+        "row": "Row_0fw9363"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "checkError"
+}
