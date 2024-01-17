@@ -1,89 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1yp23o6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="5df4c1b" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0" camunda:diagramRelationId="f3e0e694-8bb4-451d-8ca5-0159745e1779">
-  <bpmn:process id="paymentProcess" name="Payment Process" isExecutable="true">
-    <bpmn:extensionElements>
-      <zeebe:userTaskForm id="userTaskForm_2r71eqk">{
-  "executionPlatform": "Camunda Cloud",
-  "executionPlatformVersion": "8.2.0",
-  "exporter": {
-    "name": "Camunda Web Modeler",
-    "version": "8516401"
-  },
-  "schemaVersion": 10,
-  "components": [
-    {
-      "text": "## Check Credit Card Details",
-      "type": "text",
-      "id": "Field_1y7r1ul",
-      "layout": {
-        "row": "Row_1yzjcyo"
-      }
-    },
-    {
-      "label": "Reference",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_1c38750",
-        "columns": null
-      },
-      "id": "Field_18do177",
-      "key": "reference",
-      "readonly": false
-    },
-    {
-      "label": "Amount",
-      "type": "textfield",
-      "id": "Field_0p8a9xa",
-      "key": "amount",
-      "layout": {
-        "row": "Row_0h6eq07"
-      }
-    },
-    {
-      "label": "Card Number",
-      "type": "textfield",
-      "id": "Field_1j2py1a",
-      "key": "cardNumber",
-      "layout": {
-        "row": "Row_15opzdy"
-      }
-    },
-    {
-      "label": "Card Expiry",
-      "type": "textfield",
-      "id": "Field_1l2tmgg",
-      "key": "cardExpiry",
-      "layout": {
-        "row": "Row_0a2rkgg"
-      }
-    },
-    {
-      "label": "Card CVC",
-      "type": "textfield",
-      "id": "Field_0pydzhj",
-      "key": "cardCVC",
-      "layout": {
-        "row": "Row_1nh9icr"
-      }
-    },
-    {
-      "label": "Valid Credit Card?",
-      "type": "checkbox",
-      "id": "Field_08wi408",
-      "key": "isValidCreditCard",
-      "layout": {
-        "row": "Row_0fw9363"
-      }
-    }
-  ],
-  "type": "default",
-  "id": "checkError"
-}</zeebe:userTaskForm>
-    </bpmn:extensionElements>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1yp23o6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="6d60e3c" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.4.0" camunda:diagramRelationId="f3e0e694-8bb4-451d-8ca5-0159745e1779">
+  <bpmn:process id="Process_PaymentProcessAL" name="Payment Process" isExecutable="true">
     <bpmn:startEvent id="StartEvent_PaymentRequired" name="Payment Required">
       <bpmn:outgoing>Flow_paymentRequired-chargeCreditCard</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_paymentRequired-chargeCreditCard" sourceRef="StartEvent_PaymentRequired" targetRef="Gateway_0fjn4af" />
+    <bpmn:sequenceFlow id="Flow_paymentRequired-chargeCreditCard" sourceRef="StartEvent_PaymentRequired" targetRef="Gateway_Merge" />
     <bpmn:serviceTask id="Task_ChargeCreditCard" name="Charge Credit Card">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="chargeCreditCard" retries="2" />
@@ -96,12 +17,17 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_chargeCreditCard-paymentSuccessful" sourceRef="Task_ChargeCreditCard" targetRef="EndEvent_PaymentSuccessful" />
     <bpmn:boundaryEvent id="BoundaryEvent_InvalidCardExpiryDate" name="Invalid Card Expiry Date" attachedToRef="Task_ChargeCreditCard">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:output source="=errorMessage" target="errorMessage" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
       <bpmn:outgoing>Flow_00zdqb3</bpmn:outgoing>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_1hlamdh" errorRef="Error_0jfs72p" />
     </bpmn:boundaryEvent>
     <bpmn:userTask id="Task_ReviewCreditCard" name="Review Credit Card Details">
       <bpmn:extensionElements>
-        <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_2r71eqk" />
+        <zeebe:formDefinition formId="checkError" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_00zdqb3</bpmn:incoming>
       <bpmn:outgoing>Flow_09afd84</bpmn:outgoing>
@@ -119,19 +45,19 @@
     <bpmn:sequenceFlow id="Flow_GatewayResolved-EndEvent_PaymentCancelled" name="No" sourceRef="Gateway_Resolved" targetRef="Event_PaymentCancelled">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isValidCreditCard = false</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_Gateway_Resolved-Task_ChargeCreditCard" name="Yes" sourceRef="Gateway_Resolved" targetRef="Gateway_0fjn4af">
+    <bpmn:sequenceFlow id="Flow_Gateway_Resolved-Task_ChargeCreditCard" name="Yes" sourceRef="Gateway_Resolved" targetRef="Gateway_Merge">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isValidCreditCard = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:exclusiveGateway id="Gateway_0fjn4af">
+    <bpmn:exclusiveGateway id="Gateway_Merge">
       <bpmn:incoming>Flow_paymentRequired-chargeCreditCard</bpmn:incoming>
       <bpmn:incoming>Flow_Gateway_Resolved-Task_ChargeCreditCard</bpmn:incoming>
       <bpmn:outgoing>Flow_165oj22</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_165oj22" sourceRef="Gateway_0fjn4af" targetRef="Task_ChargeCreditCard" />
+    <bpmn:sequenceFlow id="Flow_165oj22" sourceRef="Gateway_Merge" targetRef="Task_ChargeCreditCard" />
   </bpmn:process>
-  <bpmn:error id="Error_0jfs72p" name="Card Expiry Date Error " errorCode="cardExpiryDateError" />
+  <bpmn:error id="Error_0jfs72p" name="Card Expiry Date Error" errorCode="cardExpiryDateError" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="paymentProcess">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_PaymentProcessAL">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_PaymentRequired">
         <dc:Bounds x="179" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -142,8 +68,11 @@
         <dc:Bounds x="400" y="77" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0fjn4af_di" bpmnElement="Gateway_0fjn4af" isMarkerVisible="true">
-        <dc:Bounds x="275" y="92" width="50" height="50" />
+      <bpmndi:BPMNShape id="Event_0x6y7pw_di" bpmnElement="EndEvent_PaymentSuccessful">
+        <dc:Bounds x="622" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="614" y="142" width="54" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_103xb68_di" bpmnElement="Task_ReviewCreditCard">
         <dc:Bounds x="400" y="250" width="100" height="80" />
@@ -154,17 +83,14 @@
           <dc:Bounds x="424" y="445" width="52" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0x6y7pw_di" bpmnElement="EndEvent_PaymentSuccessful">
-        <dc:Bounds x="622" y="99" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="614" y="142" width="54" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0c0pph5_di" bpmnElement="Event_PaymentCancelled">
         <dc:Bounds x="622" y="392" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="615" y="354.5" width="49" height="27" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0fjn4af_di" bpmnElement="Gateway_Merge" isMarkerVisible="true">
+        <dc:Bounds x="275" y="92" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0lncunr_di" bpmnElement="BoundaryEvent_InvalidCardExpiryDate">
         <dc:Bounds x="432" y="139" width="36" height="36" />
@@ -192,7 +118,7 @@
         <di:waypoint x="475" y="410" />
         <di:waypoint x="622" y="410" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="512" y="383" width="15" height="14" />
+          <dc:Bounds x="522" y="392" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1b9d043_di" bpmnElement="Flow_Gateway_Resolved-Task_ChargeCreditCard">
@@ -200,7 +126,7 @@
         <di:waypoint x="300" y="410" />
         <di:waypoint x="300" y="142" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="361" y="383" width="18" height="14" />
+          <dc:Bounds x="354" y="392" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_165oj22_di" bpmnElement="Flow_165oj22">

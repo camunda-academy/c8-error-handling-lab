@@ -60,8 +60,11 @@ public class CreditCardServiceHandler implements JobHandler {
     	                .send()
     	                .join();
     		} catch (InvalidCreditCardException e) {
+				final Map<String, Object> outputVariables = new HashMap<String, Object>();
+    			outputVariables.put("errorMessage", "There was a Card Expiry Date Error");
     		    client.newThrowErrorCommand(job.getKey())
     		    	    .errorCode(BPMN_ERROR_INVALID_CARD_EXPIRY_DATE)
+						.variables(outputVariables)
     		    	    .send()
     		    	    .join();
     		}

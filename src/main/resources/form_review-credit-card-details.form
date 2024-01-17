@@ -1,11 +1,12 @@
 {
   "executionPlatform": "Camunda Cloud",
-  "executionPlatformVersion": "8.2.0",
+  "executionPlatformVersion": "8.4.0",
   "exporter": {
     "name": "Camunda Web Modeler",
-    "version": "8516401"
+    "version": "7da525c"
   },
-  "schemaVersion": 10,
+  "schemaVersion": 14,
+  "id": "checkError",
   "components": [
     {
       "text": "## Check Credit Card Details",
@@ -19,11 +20,12 @@
       "label": "Reference",
       "type": "textfield",
       "layout": {
-        "row": "Row_1ammndy",
+        "row": "Row_1c38750",
         "columns": null
       },
-      "id": "Field_035kqla",
-      "key": "reference"
+      "id": "Field_18do177",
+      "key": "reference",
+      "readonly": false
     },
     {
       "label": "Amount",
@@ -69,8 +71,17 @@
       "layout": {
         "row": "Row_0fw9363"
       }
+    },
+    {
+      "label": "Error message",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_06coqoq",
+        "columns": null
+      },
+      "id": "Field_03kzv5b",
+      "key": "errorMessage"
     }
   ],
-  "type": "default",
-  "id": "checkError"
+  "type": "default"
 }
